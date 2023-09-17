@@ -23,31 +23,22 @@
 
 import {
   Box,
-  Icon,
-
   SimpleGrid,
   useColorModeValue,
 } from '@chakra-ui/react';
 // Custom components
 // import MiniCalendar from 'components/calendar/MiniCalendar';
-import MiniStatistics from 'components/card/MiniStatistics';
 
-import IconBox from 'components/icons/IconBox';
-import {
-  MdAddTask,
-  MdBarChart,
-
-} from 'react-icons/md';
 import ComplexTable from 'views/admin/default/components/ComplexTable';
 
-import AssetTypes from 'views/admin/default/components/AssetTypes';
 import TotalSpent from 'views/admin/default/components/TotalSpent';
 
 import tableDataComplex from 'views/admin/default/variables/tableDataComplex';
-// Assets
+
 import { useEffect, useState } from 'react';
 
 // Data
+import { dummyData } from "db/dummyData.js";
 import {supabase} from "db/supabase.js";
 
 // Push Notification
@@ -64,27 +55,30 @@ export default function Default() {
   const [totalManagedAssets, setTotalManagedAssets] = useState(500);
   const [criticalAssets, setcriticalAssets] = useState(100);
   const [assetHealthRatio, setassetHealthRatio] = useState(23);
-  const [assetTypes, setAssetTypes] = useState([]);
+  const [assetTypes, setAssetTypes] = useState({});
 
-  const loadCount = async () => {
-      let { count, error } = await supabase
+  const loadData = async () => {
+      let { data: cbre, error } = await supabase
       .from('cbre')
-      .select('*', { count: 'exact' })
-      setTotalManagedAssets(count);
+      .select('*')
+      setData(cbre);
   }
 
-  // const loadAssetTypes = async () => {
-  //   let {data, error} = await supabase
-  //   .from('top_assets')
-  //   .select('*');
-    
-  //   setAssetTypes(data);
-  // }
-
   useEffect(() => {
-    loadCount();
-    // loadAssetTypes();
+    loadData();
+    
   }, [])
+
+  // useEffect(async () => {
+  //   setData(dummyData);
+  //   let { data: cbre, error } = await supabase
+  //     .from('cbre')
+  //     .select('ID')
+  //   console.log(data)
+
+  // }, [])
+
+
   
 
   const brandColor = useColorModeValue('brand.500', 'white');
@@ -94,7 +88,7 @@ export default function Default() {
 
   return (
       <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
-        <SimpleGrid
+        {/* <SimpleGrid
           columns={{ base: 1, md: 2, lg: 3, '2xl': 6 }}
           gap="20px"
           mb="20px"
@@ -125,25 +119,15 @@ export default function Default() {
             name="Assets that require attention"
             value={criticalAssets}
           />
-          {/* <HealthRatioStatistics growth="+23%" name="Assets health ratio" value={assetHealthRatio} /> */}
-        </SimpleGrid>
+          <HealthRatioStatistics growth="+23%" name="Assets health ratio" value={`${assetHealthRatio}%`} />
+        </SimpleGrid> */}
 
-        {/* Test email system */}
-        {/* <button onClick={
-          sendMail(
-            "Please",
-            "jonathanle1111@gmail.com",
-            "please work",
-          )
-        }> 
-          Click to send email
-        </button>
-*/}
-        <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap="20px" mb="20px">
+
+        <SimpleGrid columns={{ base: 2, md: 2, xl: 1 }} gap="20px" mb="20px">
           <TotalSpent />
-          <AssetTypes totalAssets={data.length} />
+          {/* <AssetTypes /> */}
         </SimpleGrid>
-        <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap="20px" mb="20px">
+        <SimpleGrid columns={{ base: 1, md: 1, xl: 1 }} gap="20px" mb="20px">
           <ComplexTable tableData={tableDataComplex} />
         </SimpleGrid>
       </Box>

@@ -309,8 +309,10 @@ export const barChartOptionsConsumption: ApexGeneric = {
 };
 
 export const pieChartOptions: ApexGeneric = {
-  labels: ["Your files", "System", "Empty"],
-  colors: ["#4318FF", "#6AD2FF", "#EFF4FB"],
+  // display top 4 types and others as "other", total 5
+  labels: ["Elevator", "Plumbing System", "Fire Alarm", "HVAC", "Others"],
+  // https://coolors.co/palette/8ecae6-219ebc-023047-ffb703-fb8500
+  colors: ["#8ecae6", "#219ebc", "#023047", "#ffb703", "#fb8500"],
   chart: {
     width: "50px",
   },
@@ -339,7 +341,7 @@ export const pieChartOptions: ApexGeneric = {
     },
   },
   fill: {
-    colors: ["#4318FF", "#6AD2FF", "#EFF4FB"],
+    colors: ["#8ecae6", "#219ebc", "#023047", "#ffb703", "#fb8500"],
   },
   tooltip: {
     enabled: true,
@@ -347,7 +349,7 @@ export const pieChartOptions: ApexGeneric = {
   },
 };
 
-export const pieChartData = [63, 25, 12];
+export const pieChartData = [40, 23, 14, 3, 20];
 
 // Total Spent Default
 

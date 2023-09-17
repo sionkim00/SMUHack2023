@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, Progress, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Icon, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
 import {
 	createColumnHelper,
 	flexRender,
@@ -17,10 +17,9 @@ import { MdCancel, MdCheckCircle, MdOutlineError } from 'react-icons/md';
 
 
 type RowObj = {
-	name: string;
+	assetID: number;
 	status: string;
 	date: string; 
-	progress: number;
 };
 
 const columnHelper = createColumnHelper<RowObj>();
@@ -33,15 +32,15 @@ export default function ComplexTable(props: { tableData: any }) {
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 	let defaultData = tableData;
 	const columns = [
-		columnHelper.accessor('name', {
-			id: 'name',
+		columnHelper.accessor('assetID', {
+			id: 'assetID',
 			header: () => (
 				<Text
 					justifyContent='space-between'
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
 					color='gray.400'>
-					NAME
+					Asset ID
 				</Text>
 			),
 			cell: (info: any) => (
@@ -65,33 +64,33 @@ export default function ComplexTable(props: { tableData: any }) {
 			),
 			cell: (info) => (
 			<Flex align='center'>
-												<Icon
-													w='24px'
-													h='24px'
-													me='5px'
-													color={
-														info.getValue() === 'Approved' ? (
-															'green.500'
-														) : info.getValue() === 'Disable' ? (
-															'red.500'
-														) : info.getValue() === 'Error' ? (
-															'orange.500'
-														) : null
-													}
-													as={
-														info.getValue() === 'Approved' ? (
-															MdCheckCircle
-														) : info.getValue() === 'Disable' ? (
-															MdCancel
-														) : info.getValue() === 'Error' ? (
-															MdOutlineError
-														) : null
-													}
-												/>
-												<Text color={textColor} fontSize='sm' fontWeight='700'>
-													{info.getValue()}
-												</Text>
-											</Flex> 
+				<Icon
+					w='24px'
+					h='24px'
+					me='5px'
+					color={
+						info.getValue() === 'Completed' ? (
+							'green.500'
+						) : info.getValue() === 'Pending' ? (
+							'red.500'
+						) : info.getValue() === 'Working' ? (
+							'orange.500'
+						) : null
+					}
+					as={
+						info.getValue() === 'Completed' ? (
+							MdCheckCircle
+						) : info.getValue() === 'Working' ? (
+							MdCancel
+						) : info.getValue() === 'Pending' ? (
+							MdOutlineError
+						) : null
+					}
+				/>
+				<Text color={textColor} fontSize='sm' fontWeight='700'>
+					{info.getValue()}
+				</Text>
+			</Flex> 
 			)
 		}),
 		columnHelper.accessor('date', {
@@ -102,7 +101,7 @@ export default function ComplexTable(props: { tableData: any }) {
 					align='center'
 					fontSize={{ sm: '10px', lg: '12px' }}
 					color='gray.400'>
-					DATE
+					UPDATDATE
 				</Text>
 			),
 			cell: (info) => (
@@ -111,23 +110,6 @@ export default function ComplexTable(props: { tableData: any }) {
 				</Text>
 			)
 		}),
-		columnHelper.accessor('progress', {
-			id: 'progress',
-			header: () => (
-				<Text
-					justifyContent='space-between'
-					align='center'
-					fontSize={{ sm: '10px', lg: '12px' }}
-					color='gray.400'>
-					PROGRESS
-				</Text>
-			),
-			cell: (info) => (
-				<Flex align='center'>
-					<Progress variant='table' colorScheme='brandScheme' h='8px' w='108px' value={info.getValue()} />
-				</Flex>
-			)
-		})
 	];
 	const [ data, setData ] = React.useState(() => [ ...defaultData ]);
 	const table = useReactTable({
